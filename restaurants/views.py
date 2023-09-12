@@ -58,6 +58,11 @@ class RestaurantInfo(APIView):
 class MenuList(APIView):
     """
     List all menus for a restaurant or create a new menu.
+    Example POST JSON input data:
+    {
+        "number": 1,
+        "day": "2023-09-12",
+    }
     """
 
     def get(self, request, pk):
@@ -68,7 +73,9 @@ class MenuList(APIView):
 
     def post(self, request, pk):
         serializer = MenuSerializer(data=request.data)
+        restaurant = Restaurant.objects.get(pk=pk)
         if serializer.is_valid():
+            serializer.validated_data["restaurant"] = restaurant
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -77,6 +84,11 @@ class MenuList(APIView):
 class MenuItemList(APIView):
     """
     List all menu items for a menu or add a new one.
+    Example POST JSON input data:
+    {
+        "name": "Cake",
+        "description": "Vanilla Strawberry Cake",
+    }
     """
 
     def get(self, request, pk):
@@ -85,9 +97,11 @@ class MenuItemList(APIView):
         serializer = MenuItemSerializer(menu_items, many=True)
         return Response(serializer.data)
 
-    def post(self, request):
+    def post(self, request, pk):
+        menu = Menu.objects.get(pk=pk)
         serializer = MenuItemSerializer(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["menu"] = menu
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
