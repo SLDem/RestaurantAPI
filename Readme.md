@@ -11,6 +11,7 @@ To run the application:
 8. Run test with `pytest` command.
 
 <h3>List of available api's:</h3>
+
 `employees/` > get list of all employees/users and add a new employee/user.
 
 `restaurants/` > get list of all restaurants and add a new restaurant.
