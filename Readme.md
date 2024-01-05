@@ -1,4 +1,4 @@
-<h1>Test task for "RestaurantAPI"</h1>
+<h1>"RestaurantAPI"</h1>
 
 To run the application:
 1. Clone the repository to your local machine.
